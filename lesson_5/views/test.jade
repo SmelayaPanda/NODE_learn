@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    ul
+        li text 1
+        // point used for multiple line text
+        li.
+            very long text
+            multiple line
+            yes
+            very long
+        li text 3
+    //  overriding of condition variable in render object
+    - var condition = false
+    if condition
+        p Yeh, i rendered! condition is true!
+    else
+        p Condition is false =(
+    - var array = [1, 2, 3]
+    each el in array
+        p= el
+    input(type='text').someCssClass#someId
