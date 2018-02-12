@@ -80,6 +80,20 @@ router.post('/update', function (req, res, next) {
 });
 
 router.post('/delete', function (req, res, next) {
+    let id = req.body.id;
+
+    mongo.connect(url, function (err, client) {
+        assert.equal(null, err);
+        const db = client.db(dbName);
+        db.collection('user-data')
+            .deleteOne({"_id": objectId(id)}, function (err, result) {
+                assert.equal(null, err);
+                console.log('data will be deleted!');
+                client.close();
+            })
+    });
+
+    res.redirect('/');
 });
 
 
