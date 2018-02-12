@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
-const MongoClient = require('mongodb').MongoClient;
+const mongo = require('mongodb').MongoClient;
+const objectId = require('mongodb').ObjectID; // transform id to correct type which mongo used
 let assert = require('assert'); // build in package for check db connection is right and other comparisons check
 
 // Connection URL
@@ -16,7 +17,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/get-data', function (req, res, next) {
     let resultArray = [];
-    MongoClient.connect(url, function (err, client) {
+    mongo.connect(url, function (err, client) {
         assert.equal(null, err);
         console.log("Connected successfully to server");
         const db = client.db(dbName);
@@ -41,7 +42,7 @@ router.post('/insert', function (req, res, next) {
         author: req.body.author
     };
 
-    MongoClient.connect(url, function (err, client) {
+    mongo.connect(url, function (err, client) {
         assert.equal(null, err);
         const db = client.db(dbName);
         db.collection('user-data').insertOne(item, function (err, result) {
@@ -55,6 +56,27 @@ router.post('/insert', function (req, res, next) {
 });
 
 router.post('/update', function (req, res, next) {
+    console.log(req.body);
+    let item = {
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author
+    };
+
+    let id = req.body.id;
+
+    mongo.connect(url, function (err, client) {
+        assert.equal(null, err);
+        const db = client.db(dbName);
+        db.collection('user-data')
+            .updateOne({"_id": objectId(id)}, {$set: item}, function (err, result) {
+                assert.equal(null, err);
+                console.log('data will be updated!');
+                client.close();
+            })
+    });
+
+    res.redirect('/');
 });
 
 router.post('/delete', function (req, res, next) {
