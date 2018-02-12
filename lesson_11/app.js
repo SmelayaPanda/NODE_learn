@@ -34,6 +34,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 // and called as function right now
 app.use(expressValidator());
 app.use(cookieParser());
+// directory for static files, may be more than one
+// app.use(express.static(path.join(__dirname, 'files')));
+// you can access to any file in directory by using
+// for example http://localhost:8000/images/img1.jpg
+// __dirname in URI not needed
 app.use(express.static(path.join(__dirname, 'public')));
 // setup memory storage (not recommended for production)
 app.use(expressSession({secret: 'panda', saveUninitialized: false, resave: false}));
