@@ -50,6 +50,9 @@ app.use('/', index);
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
+    // if method don't finished as response
+    // You must use next method to avoid infinitive loading
+    // and transfer management of the app request
     next(err);
 });
 
