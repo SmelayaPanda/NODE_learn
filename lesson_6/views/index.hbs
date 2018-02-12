@@ -1,8 +1,40 @@
-<h1>{{ title }}</h1>
+<h1>Test NODE</h1>
 <p>Welcome to {{ title }}</p>
-<form action="/test/submit" method="post">
-    <label>
-        <input type="text" name="id">
-    </label>
-    <button type="submit">Submit</button>
+{{# if success }}
+    <section class="success">
+        <h2>Success Validation!</h2>
+    </section>
+{{else}}
+    {{# if errors }}
+        <section class="errors">
+            <ul>
+                {{# each errors}}
+                    <li> {{ this.msg }}</li>
+                {{/each}}
+            </ul>
+        </section>
+    {{/if}}
+{{/if}}
+<form action="userSignIn" method="post">
+    <div class="input">
+        <label for="email">E-mail</label>
+        <input type="text" id="email" name="email">
+    </div>
+    <div class="input">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+    </div>
+    <div class="input">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword">
+    </div>
+    <button type="submit">Sign up</button>
 </form>
+
+
+<!--<form action="/test/submit" method="post">-->
+<!--<label>-->
+<!--<input type="text" name="id">-->
+<!--</label>-->
+<!--<button type="submit">Submit</button>-->
+<!--</form>-->

@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
+var expressValidator = require('express-validator');
+var expressSession = require('express-session');
 
 var index = require('./routes/index');
 // var users = require('./routes/users');
@@ -27,8 +29,14 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+// very important use validation after bodyParser
+// because validator use bodyParser
+// and called as function right now
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// setup memory storage (not recommended for production)
+app.use(expressSession({secret: 'panda', saveUninitialized: false, resave: false}));
 
 app.use('/', index);
 // app.use('/users', users);
